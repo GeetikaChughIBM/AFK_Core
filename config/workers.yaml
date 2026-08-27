@@ -1,0 +1,75 @@
+# ============================================================
+# Software Factory — Worker Registry
+#
+# Register all Fyre VMs here.
+# ⚠  NO SECRETS — passwords and API keys go in secrets.env
+#
+# secret_ref fields name the key inside secrets.env that holds
+# the credential for this worker.  The Orchestrator resolves
+# them at runtime.
+# ============================================================
+
+workers:
+
+  - id: "worker-planner-01"
+    display_name: "Planner VM 01"
+    host: "your-planner-vm.dev.fyre.ibm.com"         # replace with your Fyre hostname
+    port: 22
+    username: "your-username"                          # replace with your VM username
+    role: "planner"
+    status: "registered"      # registered | provisioning | bootstrapping | ready | assigned | executing | failed
+    # Name of the key in secrets.env that holds the SSH password for this worker
+    ssh_password_secret_ref: "WORKER_PLANNER_01_SSH_PASSWORD"
+    # Name of the key in secrets.env that holds the Bob Shell API key for this worker
+    bob_api_key_secret_ref: "WORKER_PLANNER_01_BOB_API_KEY"
+    bootstrap: "db2-v1216"
+    git:
+      user_name: "Factory Planner Agent"
+      user_email: "planner-factory@example.com"
+    capabilities:
+      - planning
+      - research
+    tags:
+      - fyre
+      - x86
+
+  - id: "worker-executor-01"
+    display_name: "Executor VM 01"
+    host: "your-executor-vm.dev.fyre.ibm.com"         # replace with your Fyre hostname
+    port: 22
+    username: "your-username"                          # replace with your VM username
+    role: "executor"
+    status: "registered"
+    ssh_password_secret_ref: "WORKER_EXECUTOR_01_SSH_PASSWORD"
+    bob_api_key_secret_ref: "WORKER_EXECUTOR_01_BOB_API_KEY"
+    bootstrap: "db2-v1216"
+    git:
+      user_name: "Factory Executor Agent"
+      user_email: "executor-factory@example.com"
+    capabilities:
+      - execution
+      - db2_build
+    tags:
+      - fyre
+      - x86
+
+  # ── Extension point ─────────────────────────────────────────
+  # To add a new worker:  copy a block above, change id/host/role
+  # No code changes required in the Orchestrator.
+  # ────────────────────────────────────────────────────────────
+
+  # - id: "worker-debugger-01"
+  #   display_name: "Debugger VM"
+  #   host: "debugger-vm.dev.fyre.ibm.com"
+  #   port: 22
+  #   username: "sfadmin"
+  #   role: "debugger"
+  #   status: "registered"
+  #   ssh_password_secret_ref: "WORKER_DEBUGGER_01_SSH_PASSWORD"
+  #   bob_api_key_secret_ref: "WORKER_DEBUGGER_01_BOB_API_KEY"
+  #   git:
+  #     user_name: "Debugger Factory Agent"
+  #     user_email: "debugger-factory@example.com"
+  #   capabilities:
+  #     - debugging
+  #     - log_analysis

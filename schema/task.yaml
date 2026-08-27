@@ -1,0 +1,110 @@
+# ============================================================
+# Task Definition Schema
+#
+# This file documents the canonical structure of a factory task.
+# Every task assigned to a worker must conform to this schema.
+# ============================================================
+
+schema_version: "1.0"
+
+# ── Required fields ────────────────────────────────────────────────────────────
+
+# Unique task identifier — used for branch name, workspace dir, artifact paths
+task_id: "TASK-001"
+
+# Human-readable title
+title: "Example: Add unit tests for parser module"
+
+# Agent role that should execute this task
+agent_role: "executor"   # planner | executor | debugger | reviewer
+
+# Repository to work in
+repository:
+  url: "https://github.com/example-org/example-repo.git"
+  # Branch that the task branch should be forked from
+  base_branch: "main"
+  # The Orchestrator creates this branch before assigning the task
+  # Pattern: factory/<task_id>
+  task_branch: "factory/TASK-001"
+
+# Git identity to use for commits on this task
+git_identity:
+  user_name: "Geetika Factory Agent"
+  user_email: "geetika-factory@example.com"
+
+# Description of what needs to be done
+description: |
+  Add comprehensive unit tests for the parser module located at src/parser.py.
+  Tests should cover all public methods and edge cases.
+  Minimum coverage threshold: 80%.
+
+# Discrete requirements — the agent must address each one
+requirements:
+  - "Write unit tests in tests/test_parser.py"
+  - "Cover all public methods of the Parser class"
+  - "Cover edge cases: empty input, malformed input, unicode"
+  - "All tests must pass"
+
+# Explicit success criteria — used by the gate manager to evaluate completion
+success_criteria:
+  - "tests/test_parser.py exists and is non-empty"
+  - "pytest exits with code 0"
+  - "coverage report shows >= 80% for src/parser.py"
+
+# Validation commands to run inside the repo directory
+# Each command must exit 0 for validation to pass
+validation:
+  - command: "pytest tests/test_parser.py -v"
+    description: "Run unit tests"
+    timeout_seconds: 300
+  - command: "pytest --cov=src/parser tests/test_parser.py --cov-report=term-missing"
+    description: "Check coverage"
+    timeout_seconds: 300
+
+# ── Inputs ─────────────────────────────────────────────────────────────────────
+
+# Artifacts this task depends on (will be placed in workspace artifacts dir)
+inputs: []
+# Example:
+# inputs:
+#   - artifact_type: "plan"
+#     path: "artifacts/plan.md"
+#     producing_task_id: "TASK-000"
+#     required: true
+
+# ── Outputs ────────────────────────────────────────────────────────────────────
+
+# Artifacts this task must produce
+outputs:
+  - artifact_type: "test_report"
+    path: "artifacts/test-report.md"
+    required: true
+  - artifact_type: "implementation_report"
+    path: "artifacts/implementation-report.md"
+    required: true
+  - artifact_type: "change_summary"
+    path: "artifacts/change-summary.json"
+    required: true
+  - artifact_type: "handoff"
+    path: "artifacts/handoff.json"
+    required: true
+
+# ── Policy overrides ───────────────────────────────────────────────────────────
+
+policy:
+  # Require human approval before merge (never set to false for production)
+  human_approval_required: true
+  # Maximum execution time before the Orchestrator times out this task
+  timeout_seconds: 3600
+  # Number of retries on failure before setting state = FAILED
+  max_retries: 2
+
+# ── Metadata ───────────────────────────────────────────────────────────────────
+
+metadata:
+  created_by: "orchestrator"
+  created_at: "2025-01-01T00:00:00Z"
+  priority: "normal"    # low | normal | high | critical
+  labels:
+    - "testing"
+    - "parser"

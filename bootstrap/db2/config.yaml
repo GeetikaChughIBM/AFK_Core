@@ -1,0 +1,66 @@
+# ============================================================
+# DB2 Bootstrap Configuration
+# Read by the Orchestrator's BootstrapManager
+# ============================================================
+
+bootstrap:
+  name: "db2-v1216"
+  description: "DB2 build environment for branch v1216"
+  version: "1.0.0"
+  script: "bootstrap/db2/commands.sh"
+  documentation: "bootstrap/db2/bld.md"
+
+environment:
+  # Path to DB2 source on the worker VM
+  source_dir: "~/db2"
+  # Git branch to build
+  build_branch: "v1216"
+  # Number of parallel build jobs
+  build_parallelism: 16
+
+tmux:
+  # tmux session name prefix; the Orchestrator appends -{job_id} at runtime
+  session_prefix: "sf-build"
+  # How often (seconds) the Orchestrator polls the status file
+  poll_interval_seconds: 30
+  # Maximum build time before declaring timeout
+  timeout_seconds: 14400   # 4 hours
+
+runtime:
+  # Base directory for per-job status/log files on the worker VM
+  jobs_base: "~/software-factory/runtime/jobs"
+  # Wrapper script path on the worker VM (uploaded by Orchestrator)
+  wrapper_script: "~/software-factory/bootstrap/job-wrapper.sh"
+
+# Sentinel strings that the Orchestrator scans tmux output for
+sentinels:
+  success: "SF_BUILD_SUCCESS"
+  failure: "SF_BUILD_FAILED"
+  started: "SF_BUILD_STARTED"
+
+# Gates that must pass before a worker using this bootstrap is marked READY
+gates:
+  - id: "build_success"
+    description: "bld exits with code 0 and success sentinel is present"
+    required: true
+  - id: "source_dir_exists"
+    description: "DB2 source directory exists at configured path"
+    required: true
+  - id: "correct_branch"
+    description: "git branch matches configured build_branch"
+    required: true
+
+# What the Orchestrator should do on failure
+on_failure:
+  capture_tmux_output: true
+  max_retries: 2
+  retry_delay_seconds: 60
+  notify_operator: true
+
+# Environment variables to inject into the worker before running the script
+env_vars:
+  DB2_SOURCE_DIR: "~/db2"
+  DB2_BUILD_BRANCH: "v1216"
+  DB2_BUILD_JOBS: "16"
+  SUPPTOOLS: "/supp/tools"
+  PERL5LIB: "/supp/tools/perllib"

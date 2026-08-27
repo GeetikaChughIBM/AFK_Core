@@ -1,0 +1,80 @@
+# ============================================================
+# Software Factory — Global Configuration
+# Secrets are NOT stored here. See config/secrets.env
+# ============================================================
+
+factory:
+  name: "agentic-software-factory"
+  version: "0.1.0"
+  environment: "development"
+
+# Git / Repository defaults
+git:
+  default_branch: "main"
+  task_branch_prefix: "factory"
+  # Identity used for automated merge commits by the Orchestrator
+  orchestrator_user_name: "Software Factory Orchestrator"
+  orchestrator_user_email: "sf-orchestrator@example.com"
+
+# Workspace layout on each worker VM
+workspace:
+  base_path: "~/software-factory/workspace"
+  runtime_path: "~/software-factory/runtime"
+  artifacts_path: "~/software-factory/artifacts"
+  logs_path: "~/software-factory/logs"
+
+# Bootstrap
+bootstrap:
+  # Maximum time (seconds) to wait for a full DB2 build before declaring failure
+  build_timeout_seconds: 14400      # 4 hours
+  # How often to poll tmux for build progress
+  poll_interval_seconds: 30
+  # tmux session name prefix used for build jobs
+  tmux_session_prefix: "sf-build"
+
+# Task execution
+tasks:
+  # Maximum time (seconds) a task may run before timeout
+  default_timeout_seconds: 3600
+  # How many times to retry a failed task before setting state = FAILED
+  max_retries: 2
+  poll_interval_seconds: 20
+
+# Gates — each gate can be set to required or optional
+gates:
+  build_success:
+    required: true
+  environment_ready:
+    required: true
+  task_complete:
+    required: true
+  tests_pass:
+    required: true
+  review_pass:
+    required: false     # automated review gate — enable when reviewer agent is live
+  human_approval:
+    required: true      # NEVER set this to false
+
+# Observability
+observability:
+  log_level: "INFO"        # DEBUG | INFO | WARNING | ERROR
+  log_dir: "logs"
+  structured_log_file: "logs/factory.jsonl"
+  state_db: "db/factory.db"
+
+# Bob Shell API
+bob:
+  api_base_url: "https://api.example.com/bob/shell"   # Update with real endpoint
+  # API keys are injected at runtime via secrets.env — never put them here
+
+# Security
+security:
+  # Workers are allowed to push only to branches matching this prefix
+  allowed_branch_prefix: "factory/"
+  # Workers must not push directly to these protected branches
+  protected_branches:
+    - "main"
+    - "master"
+    - "release"
+  # Minimum SSH key bits
+  min_ssh_key_bits: 2048

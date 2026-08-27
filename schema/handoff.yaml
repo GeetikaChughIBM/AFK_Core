@@ -1,0 +1,57 @@
+# ============================================================
+# Handoff Contract Schema
+#
+# Agents write handoff.json to signal readiness for the next
+# step in the pipeline. The Orchestrator reads this to route.
+# ============================================================
+
+schema_version: "1.0"
+
+# Task this handoff belongs to
+task_id: "TASK-001"
+
+# Who wrote this handoff
+producing_agent: "executor"   # planner | executor | debugger | reviewer
+
+# Who should consume this handoff (next agent or gate)
+consuming_agent: "reviewer"   # planner | executor | debugger | reviewer | orchestrator | human
+
+# Readiness status
+# READY_FOR_HANDOFF — all artifacts present, next agent can start
+# BLOCKED           — something prevents handoff (explain in notes)
+# FAILED            — producing agent failed (details in notes)
+status: "READY_FOR_HANDOFF"
+
+# Git branch for this task
+branch: "factory/TASK-001"
+
+# Latest commit SHA (set by executor after push)
+commit_sha: ""
+
+# Artifacts included in this handoff
+artifacts:
+  - artifact_type: "implementation_report"
+    path: "artifacts/implementation-report.md"
+    required: true
+    available: true
+  - artifact_type: "test_report"
+    path: "artifacts/test-report.md"
+    required: true
+    available: true
+  - artifact_type: "change_summary"
+    path: "artifacts/change-summary.json"
+    required: true
+    available: true
+
+# Human-readable notes from the producing agent
+notes: ""
+
+# Timestamp of handoff
+produced_at: ""
+
+# Gate results produced alongside this handoff
+gates_passed:
+  - "task_complete"
+  - "tests_pass"
+
+gates_failed: []

@@ -1,0 +1,9 @@
+paramiko>=3.4.0          # SSH client
+pyyaml>=6.0.1            # YAML config parsing
+click>=8.1.7             # CLI framework
+rich>=13.7.0             # Terminal output / observability
+python-dotenv>=1.0.1     # secrets.env loading
+requests>=2.31.0         # HTTP calls (Bob Shell API)
+jsonschema>=4.21.1        # Artifact/task schema validation
+tabulate>=0.9.0          # Tabular state display
+scp>=0.15.0              # SCP file transfer over paramiko

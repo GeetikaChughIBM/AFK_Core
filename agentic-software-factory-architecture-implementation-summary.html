@@ -1,0 +1,252 @@
+
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Agentic Software Factory</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, "Segoe UI", system-ui, sans-serif; font-size: 14px; line-height: 1.6; background: #fff; color: #1f2328; padding: 32px 16px; }
+  .wrap { max-width: 760px; margin: 0 auto; }
+  h1 { font-size: 22px; font-weight: 700; margin-bottom: 4px; }
+  .subtitle { color: #57606a; font-size: 13px; margin-bottom: 32px; }
+  h2 { font-size: 15px; font-weight: 700; color: #1f2328; margin: 28px 0 10px; border-bottom: 1px solid #e5e7eb; padding-bottom: 5px; }
+  h3 { font-size: 13px; font-weight: 700; color: #3b82d4; margin: 16px 0 6px; }
+  p { margin-bottom: 10px; color: #1f2328; }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+  .card { background: #f7f8fa; border: 1px solid #e5e7eb; border-radius: 6px; padding: 14px; }
+  .card .label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; color: #57606a; font-weight: 600; margin-bottom: 4px; }
+  .card .value { font-size: 13px; font-weight: 600; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th { background: #f7f8fa; border: 1px solid #e5e7eb; padding: 7px 10px; text-align: left; font-weight: 600; }
+  td { border: 1px solid #e5e7eb; padding: 6px 10px; vertical-align: top; }
+  tr:nth-child(even) td { background: #fafafa; }
+  code { font-family: "SF Mono", "Fira Code", monospace; background: #f0f3f6; padding: 1px 5px; border-radius: 3px; font-size: 12px; }
+  .mono { font-family: "SF Mono", "Fira Code", monospace; font-size: 12px; white-space: pre-wrap; background: #f7f8fa; border: 1px solid #e5e7eb; border-radius: 6px; padding: 14px; overflow-x: auto; line-height: 1.5; }
+  .pill { display: inline-block; padding: 2px 8px; border-radius: 12px; font-size: 11px; font-weight: 600; }
+  .green { background: #dcfce7; color: #166534; }
+  .yellow { background: #fef9c3; color: #854d0e; }
+  .blue { background: #dbeafe; color: #1e40af; }
+  .red { background: #fee2e2; color: #991b1b; }
+  .gray { background: #f1f5f9; color: #475569; }
+  .ext { background: #f3e8ff; color: #6b21a8; }
+  ul { margin: 6px 0 10px 18px; }
+  li { margin-bottom: 3px; font-size: 13px; }
+  .divider { border: none; border-top: 1px solid #e5e7eb; margin: 24px 0; }
+  .arrow { color: #57606a; }
+  footer { margin-top: 40px; padding-top: 16px; border-top: 1px solid #e5e7eb; text-align: center; font-size: 12px; color: #57606a; }
+  .vms { display: flex; gap: 12px; align-items: flex-start; flex-wrap: wrap; }
+  .vm-box { flex: 1; min-width: 180px; border: 1px solid #e5e7eb; border-radius: 6px; padding: 12px; background: #f7f8fa; }
+  .vm-box .vm-title { font-weight: 700; font-size: 13px; margin-bottom: 4px; }
+  .vm-box .vm-sub { font-size: 11px; color: #57606a; margin-bottom: 8px; }
+  .vm-box ul { margin-left: 14px; }
+  .vm-box li { font-size: 12px; color: #1f2328; }
+  .pipeline { display: flex; align-items: center; flex-wrap: wrap; gap: 4px; }
+  .pstep { padding: 5px 12px; border-radius: 4px; font-size: 12px; font-weight: 600; border: 1px solid #e5e7eb; background: #f7f8fa; }
+  .parr { color: #57606a; font-size: 16px; font-weight: 300; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<h1>Agentic Software Factory</h1>
+<p class="subtitle">Version 0.1 · Phase 1 implementation · Fyre VMs + Bob + SQLite + SSH</p>
+
+
+<h2>Infrastructure</h2>
+<div class="vms">
+  <div class="vm-box">
+    <div class="vm-title">Orchestrator VM</div>
+    <div class="vm-sub">Geetika-5y420-x86 · geetika</div>
+    <ul>
+      <li>Runs <code>orchestrator/main.py</code></li>
+      <li>SSH → all workers</li>
+      <li>SQLite state DB</li>
+      <li>Artifact store</li>
+      <li>Human approval boundary</li>
+    </ul>
+  </div>
+  <div class="vm-box">
+    <div class="vm-title">Executor Worker</div>
+    <div class="vm-sub">Geetika-azvb1-x86 · geetika</div>
+    <ul>
+      <li>Role: <code>executor</code></li>
+      <li>Bob API key: key2</li>
+      <li>DB2 bootstrap: v1216</li>
+      <li>Workspace: <code>/opt/sf/workspace/</code></li>
+    </ul>
+  </div>
+  <div class="vm-box">
+    <div class="vm-title">Planner Worker</div>
+    <div class="vm-sub">KhushiTyagi463-5zh1k · khushiid</div>
+    <ul>
+      <li>Role: <code>planner</code></li>
+      <li>Bob API key: key3</li>
+      <li>DB2 bootstrap: v1216</li>
+      <li>Workspace: <code>/opt/sf/workspace/</code></li>
+    </ul>
+  </div>
+</div>
+
+<hr class="divider" />
+
+
+<h2>Orchestrator Components</h2>
+<table>
+  <tr><th>Module</th><th>Responsibility</th><th>Key methods</th></tr>
+  <tr><td><code>state.py</code></td><td>SQLite state — workers, tasks, jobs, artifacts, gates, events</td><td><code>upsert_worker</code>, <code>set_task_status</code>, <code>record_gate</code>, <code>add_event</code></td></tr>
+  <tr><td><code>ssh_client.py</code></td><td>paramiko SSH wrapper — run, tmux, SCP upload/download</td><td><code>run</code>, <code>tmux_send_keys</code>, <code>tmux_capture_pane</code>, <code>upload</code>, <code>download</code></td></tr>
+  <tr><td><code>worker_manager.py</code></td><td>VM registry, secret resolution, connection pool, health check</td><td><code>get_connection</code>, <code>find_available_worker</code>, <code>health_check_all</code></td></tr>
+  <tr><td><code>bootstrap_manager.py</code></td><td>Upload scripts → start tmux build → poll sentinels → READY|FAILED</td><td><code>bootstrap_worker</code>, <code>get_build_output</code></td></tr>
+  <tr><td><code>task_manager.py</code></td><td>Task assignment, workspace setup, git identity config, completion polling</td><td><code>assign_task</code>, <code>prepare_workspace</code>, <code>poll_task_completion</code></td></tr>
+  <tr><td><code>artifact_manager.py</code></td><td>Collect from worker via SCP, validate, distribute between workers</td><td><code>collect_artifacts</code>, <code>distribute_artifacts</code>, <code>validate_required_artifacts</code></td></tr>
+  <tr><td><code>git_manager.py</code></td><td>Clone repo on worker, create task branch, verify push, branch safety</td><td><code>setup_repo</code>, <code>verify_branch_pushed</code>, <code>get_branch_diff_summary</code></td></tr>
+  <tr><td><code>gate_manager.py</code></td><td>Automated gate evaluation + human approval workflow</td><td><code>evaluate_all_gates</code>, <code>approve_task</code>, <code>reject_task</code></td></tr>
+  <tr><td><code>observability.py</code></td><td>Rich terminal + JSONL audit log, structured events</td><td><code>get_logger</code>, <code>log.event()</code></td></tr>
+</table>
+
+<hr class="divider" />
+
+
+<h2>Task Pipeline (<code>python -m orchestrator.main run --task TASK-001</code>)</h2>
+<div class="pipeline">
+  <div class="pstep green">1. Workspace prep</div><div class="parr">→</div>
+  <div class="pstep green">2. Clone repo + create branch</div><div class="parr">→</div>
+  <div class="pstep yellow">3. Launch Bob in tmux</div><div class="parr">→</div>
+  <div class="pstep yellow">4. Poll state.json</div><div class="parr">→</div>
+  <div class="pstep blue">5. Collect artifacts</div><div class="parr">→</div>
+  <div class="pstep blue">6. Evaluate gates</div><div class="parr">→</div>
+  <div class="pstep red">7. Human approval</div><div class="parr">→</div>
+  <div class="pstep green">8. Merge (human)</div>
+</div>
+
+<hr class="divider" />
+
+
+<h2>State Model</h2>
+<div class="grid2">
+  <div>
+    <h3>Worker States</h3>
+    <div class="mono">REGISTERED
+  → PROVISIONING
+  → BOOTSTRAPPING
+  → READY ←──────────────┐
+  → ASSIGNED              │
+  → EXECUTING             │
+  → AVAILABLE (→ READY) ──┘
+  → OFFLINE
+  → FAILED</div>
+  </div>
+  <div>
+    <h3>Task States</h3>
+    <div class="mono">QUEUED
+  → ASSIGNED
+  → PROVISIONING
+  → EXECUTING
+  → VALIDATING
+  → AWAITING_HUMAN_REVIEW
+  → APPROVED → MERGED
+  → REJECTED
+  → FAILED → (retry) → QUEUED
+  → FAILED (terminal)</div>
+  </div>
+</div>
+
+<hr class="divider" />
+
+
+<h2>Gate Sequence</h2>
+<table>
+  <tr><th>Gate</th><th>Required</th><th>Checks</th></tr>
+  <tr><td><code>task_complete</code></td><td><span class="pill green">YES</span></td><td><code>state.json</code> status=COMPLETED, validation_passed=true</td></tr>
+  <tr><td><code>tests_pass</code></td><td><span class="pill green">YES</span></td><td><code>test-report.md</code> has no FAIL entries</td></tr>
+  <tr><td><code>branch_pushed</code></td><td><span class="pill green">YES</span></td><td><code>change-summary.json</code> has non-empty commit_sha</td></tr>
+  <tr><td><code>required_artifacts</code></td><td><span class="pill green">YES</span></td><td>All outputs declared in task.yaml exist and are non-empty</td></tr>
+  <tr><td><code>review_pass</code></td><td><span class="pill ext">OPTIONAL</span></td><td><code>review-report.md</code> contains REVIEW_PASSED (reviewer agent off by default)</td></tr>
+  <tr><td><code>human_approval</code></td><td><span class="pill red">REQUIRED</span></td><td>Operator runs <code>approve --task</code>. Can never be disabled.</td></tr>
+</table>
+
+<hr class="divider" />
+
+
+<h2>DB2 Bootstrap Sequence</h2>
+<div class="mono">Orchestrator SSH → Worker
+  1. Run bootstrap/common/setup.sh   (create workspace dirs)
+  2. Upload bootstrap/db2/commands.sh
+  3. tmux new-session -d -s sf-build-db2
+  4. Export DB2_BUILD_BRANCH=v1216, DB2_BUILD_JOBS=16
+  5. Execute commands.sh inside tmux
+     └── setbldtree ~/db2 &amp;&amp; bld -j 16
+  6. Poll tmux every 30s for sentinel:
+     ✓ SF_BUILD_SUCCESS → Worker state = READY
+     ✗ SF_BUILD_FAILED  → Worker state = FAILED (retry up to 2x)
+     ✗ Timeout 4h       → Worker state = FAILED
+  
+SSH disconnect tolerance: tmux keeps build alive;
+Orchestrator reconnects and resumes polling.</div>
+
+<hr class="divider" />
+
+
+<h2>Operator CLI Reference</h2>
+<table>
+  <tr><th>Command</th><th>Purpose</th></tr>
+  <tr><td><code>init</code></td><td>Create database, sync worker registry</td></tr>
+  <tr><td><code>status [--worker] [--task]</code></td><td>Factory overview, worker detail, or task detail with gates + artifacts</td></tr>
+  <tr><td><code>health &lt;worker-id&gt;</code></td><td>SSH connectivity check</td></tr>
+  <tr><td><code>bootstrap --worker &lt;id&gt; [--force-reset]</code></td><td>Provision VM: tmux + DB2 build</td></tr>
+  <tr><td><code>build-output --worker &lt;id&gt;</code></td><td>Live tmux pane capture during build</td></tr>
+  <tr><td><code>assign --task &lt;file.yaml&gt; [--worker &lt;id&gt;]</code></td><td>Register + assign a task</td></tr>
+  <tr><td><code>run --task &lt;id&gt;</code></td><td>Full pipeline: workspace → Bob → artifacts → gates → approval request</td></tr>
+  <tr><td><code>approve --task &lt;id&gt;</code></td><td>Grant human approval (task → APPROVED, clears for merge)</td></tr>
+  <tr><td><code>reject --task &lt;id&gt; [--reason]</code></td><td>Reject at human gate (task → REJECTED)</td></tr>
+  <tr><td><code>gates --task &lt;id&gt;</code></td><td>Gate evaluation summary table</td></tr>
+  <tr><td><code>logs [--task] [--worker] [--limit]</code></td><td>Structured audit log events</td></tr>
+</table>
+
+<hr class="divider" />
+
+
+<h2>Agent Artifact Contracts</h2>
+<table>
+  <tr><th>Producer</th><th>Artifact</th><th>Consumer</th></tr>
+  <tr><td>Planner</td><td><code>plan.md</code>, <code>tasks.yaml</code>, <code>handoff.json</code></td><td>Executor</td></tr>
+  <tr><td>Executor</td><td><code>implementation-report.md</code>, <code>test-report.md</code>, <code>change-summary.json</code>, <code>handoff.json</code></td><td>GateManager</td></tr>
+  <tr><td>Debugger <span class="pill ext">Phase 3</span></td><td><code>debug-report.md</code>, <code>fix-plan.yaml</code></td><td>Executor (retry)</td></tr>
+  <tr><td>Reviewer <span class="pill ext">Phase 4</span></td><td><code>review-report.md</code></td><td>Human approval gate</td></tr>
+</table>
+
+<hr class="divider" />
+
+
+<h2>Security Boundaries</h2>
+<table>
+  <tr><th>Item</th><th>Location</th><th>Committed?</th></tr>
+  <tr><td>VM hostnames, roles, secret refs</td><td><code>config/workers.yaml</code></td><td><span class="pill green">Yes</span></td></tr>
+  <tr><td>SSH passwords</td><td><code>config/secrets.env</code></td><td><span class="pill red">Never</span></td></tr>
+  <tr><td>Bob API keys (scoped per worker)</td><td><code>config/secrets.env</code></td><td><span class="pill red">Never</span></td></tr>
+  <tr><td>Bob API key on worker</td><td>tmux env var (injected at runtime)</td><td><span class="pill red">Never written to disk</span></td></tr>
+  <tr><td>Main / master / release branch</td><td>Protected — factory never pushes</td><td>Human only</td></tr>
+  <tr><td>Worker branches</td><td><code>factory/&lt;task-id&gt;</code> only</td><td>Workers only</td></tr>
+</table>
+
+<hr class="divider" />
+
+
+<h2>Extension Points (Phase 2+)</h2>
+<table>
+  <tr><th>Add</th><th>How</th></tr>
+  <tr><td>New agent role</td><td>Add <code>agents/&lt;role&gt;/instructions.md</code>, register VM in <code>workers.yaml</code></td></tr>
+  <tr><td>Debugger (Phase 3)</td><td>Enable existing <code>agents/debugger/instructions.md</code>, add worker</td></tr>
+  <tr><td>Reviewer gate (Phase 4)</td><td>Set <code>review_pass.required: true</code> in <code>factory.yaml</code>, add worker</td></tr>
+  <tr><td>New project/environment</td><td>Add <code>bootstrap/&lt;env&gt;/commands.sh</code></td></tr>
+  <tr><td>PostgreSQL state</td><td>Swap <code>StateManager._conn()</code> — interface unchanged</td></tr>
+  <tr><td>Vault secrets</td><td>Add <code>SecretProvider</code> ABC, swap in <code>WorkerManager</code></td></tr>
+  <tr><td>Pipeline DAG (Phase 6)</td><td>Add <code>PipelineManager</code>; state primitives already in place</td></tr>
+</table>
+
+<footer>Made with IBM Bob</footer>
+</div>
+</body>
+</html>
